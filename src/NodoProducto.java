@@ -1,22 +1,17 @@
-
-/*
- * Clase NodoProducto:
- * Representa un nodo de la lista enlazada simple.
- * Cada nodo guarda un Producto y una referencia al siguiente nodo.
- */
+// Clase NodoProducto
 public class NodoProducto {
 
     // Atributos
-    private Producto dato;          // aquí se guarda el producto
-    private NodoProducto siguiente; // referencia al siguiente nodo
+    private Producto dato;          
+    private NodoProducto siguiente; 
 
     // Constructor
     public NodoProducto(Producto dato) {
         this.dato = dato;
-        this.siguiente = null; // al crear el nodo, aún no apunta a nadie
+        this.siguiente = null; 
     }
 
-    // Getter y Setter para el producto
+    // Getter y Setter
     public Producto getDato() {
         return dato;
     }
@@ -25,7 +20,7 @@ public class NodoProducto {
         this.dato = dato;
     }
 
-    // Getter y Setter para el siguiente nodo
+    // Getter y Setter 
     public NodoProducto getSiguiente() {
         return siguiente;
     }

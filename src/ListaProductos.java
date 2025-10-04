@@ -77,7 +77,7 @@ public class ListaProductos {
         }
     }
 
-    // Agregar imagen a un producto específico 
+    // Agregar imagen a un producto 
     public void agregarImagenAProducto(String nombreBuscado, String rutaImagen) {
         NodoProducto aux = cabeza;
         boolean agregado = false;
