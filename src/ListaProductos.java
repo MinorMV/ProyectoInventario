@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class ListaProductos {
 
     // Nodo 
-    private NodoProducto cabeza;
+    private Producto cabeza;
 
     // Constructor
     public ListaProductos() {
@@ -12,34 +12,33 @@ public class ListaProductos {
 
     // --- Insertar al inicio ---
     public void insertarInicio(Producto nuevoProducto) {
-        NodoProducto nuevo = new NodoProducto(nuevoProducto);
-        nuevo.setSiguiente(cabeza);
-        cabeza = nuevo;
+        nuevoProducto.setSiguiente(cabeza);
+        cabeza = nuevoProducto;
         System.out.println("Producto agregado al inicio correctamente.\n");
     }
 
     // --- Insertar al final ---
     public void insertarFinal(Producto nuevoProducto) {
-        NodoProducto nuevo = new NodoProducto(nuevoProducto);
         if (cabeza == null) {
-            cabeza = nuevo;
+            cabeza = nuevoProducto;
         } else {
-            NodoProducto aux = cabeza;
+            Producto aux = cabeza;
             while (aux.getSiguiente() != null) {
                 aux = aux.getSiguiente();
             }
-            aux.setSiguiente(nuevo);
+            aux.setSiguiente(nuevoProducto);
         }
+        nuevoProducto.setSiguiente(null); // último de la lista
         System.out.println("Producto agregado al final correctamente.\n");
     }
 
     // Modificar producto por nombre 
     public void modificarProducto(String nombreBuscado, Scanner sc) {
-        NodoProducto aux = cabeza;
+        Producto aux = cabeza;
         boolean encontrado = false;
 
         while (aux != null) {
-            if (aux.getDato().getNombre().equalsIgnoreCase(nombreBuscado)) {
+            if (aux.getNombre().equalsIgnoreCase(nombreBuscado)) {
                 encontrado = true;
                 System.out.println("\nProducto encontrado. Ingrese los nuevos datos:");
 
@@ -60,11 +59,11 @@ public class ListaProductos {
                 int nuevaCantidad = sc.nextInt();
                 sc.nextLine();
 
-                aux.getDato().setNombre(nuevoNombre);
-                aux.getDato().setPrecio(nuevoPrecio);
-                aux.getDato().setCategoria(nuevaCategoria);
-                aux.getDato().setFechaVencimiento(nuevaFecha);
-                aux.getDato().setCantidad(nuevaCantidad);
+                aux.setNombre(nuevoNombre);
+                aux.setPrecio(nuevoPrecio);
+                aux.setCategoria(nuevaCategoria);
+                aux.setFechaVencimiento(nuevaFecha);
+                aux.setCantidad(nuevaCantidad);
 
                 System.out.println("\nProducto modificado correctamente.\n");
                 break;
@@ -79,12 +78,12 @@ public class ListaProductos {
 
     // Agregar imagen a un producto 
     public void agregarImagenAProducto(String nombreBuscado, String rutaImagen) {
-        NodoProducto aux = cabeza;
+        Producto aux = cabeza;
         boolean agregado = false;
 
         while (aux != null) {
-            if (aux.getDato().getNombre().equalsIgnoreCase(nombreBuscado)) {
-                aux.getDato().agregarImagen(rutaImagen);
+            if (aux.getNombre().equalsIgnoreCase(nombreBuscado)) {
+                aux.agregarImagen(rutaImagen);
                 System.out.println("Imagen agregada al producto correctamente.\n");
                 agregado = true;
                 break;
@@ -104,10 +103,10 @@ public class ListaProductos {
             return;
         }
 
-        NodoProducto aux = cabeza;
+        Producto aux = cabeza;
         System.out.println("\n--- Productos en inventario ---");
         while (aux != null) {
-            System.out.println(aux.getDato());
+            System.out.println(aux);
             aux = aux.getSiguiente();
         }
     }
@@ -119,15 +118,14 @@ public class ListaProductos {
             return;
         }
 
-        NodoProducto aux = cabeza;
+        Producto aux = cabeza;
         double totalGeneral = 0;
 
         System.out.println("\n--- Reporte de costos del inventario ---");
         while (aux != null) {
-            Producto p = aux.getDato();
-            double costo = p.getCostoTotal();
-            System.out.println(p.getNombre() + " - " + p.getCantidad() + " unidades × " 
-                    + p.getPrecio() + " colones = " + costo + " colones");
+            double costo = aux.getCostoTotal();
+            System.out.println(aux.getNombre() + " - " + aux.getCantidad() + " unidades × " 
+                    + aux.getPrecio() + " colones = " + costo + " colones");
             totalGeneral += costo;
             aux = aux.getSiguiente();
         }

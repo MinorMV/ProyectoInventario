@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 
 /* Clase Producto:*/
@@ -11,9 +10,10 @@ public class Producto {
     private String categoria;
     private String fechaVencimiento; 
     private int cantidad;            
-
- 
     private ArrayList<String> listaImagenes;
+
+    // Enlace  siguiente producto (para la lista enlazada)
+    private Producto siguiente;
 
     // --- Constructores ---
 
@@ -24,14 +24,14 @@ public class Producto {
         this.fechaVencimiento = fechaVencimiento; 
         this.cantidad = cantidad;
         this.listaImagenes = new ArrayList<>();
+        this.siguiente = null; 
     }
-
 
     public Producto(String nombre, double precio, String categoria, int cantidad) {
         this(nombre, precio, categoria, "", cantidad);
     }
 
-    // --- Getters y Setters 
+    // --- Getters y Setters ---
 
     public String getNombre() {
         return nombre;
@@ -77,6 +77,14 @@ public class Producto {
         return listaImagenes;
     }
 
+    // Getter y Setter enlace al siguiente producto
+    public Producto getSiguiente() {
+        return siguiente;
+    }
+
+    public void setSiguiente(Producto siguiente) {
+        this.siguiente = siguiente;
+    }
 
     // Agregar una imagen a la lista 
     public void agregarImagen(String ruta) {

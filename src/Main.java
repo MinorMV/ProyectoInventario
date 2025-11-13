@@ -15,7 +15,7 @@ public class Main {
 
         do {
             System.out.println("\n==============================");
-            System.out.println("  SISTEMA DE INVENTARIO (AV1)");
+            System.out.println("  SISTEMA DE INVENTARIO");
             System.out.println("==============================");
             System.out.println("1) Insertar producto al INICIO");
             System.out.println("2) Insertar producto al FINAL");
