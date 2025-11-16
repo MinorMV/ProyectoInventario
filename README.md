@@ -5,6 +5,5 @@ Curso: Estructuras de Datos
 
 Profesor: Romario Salas Cerdas  
 
-Estudiantes:
-Minor Mora Varga  
-Weslany Valeska Chacón Hernández
+Estudiante:
+Minor Mora Vargas

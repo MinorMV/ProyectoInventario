@@ -12,10 +12,14 @@ public class Producto {
     private int cantidad;            
     private ArrayList<String> listaImagenes;
 
-    // Enlace  siguiente producto (para la lista enlazada)
+    // Enlace siguiente producto lista enlazada
     private Producto siguiente;
 
-    // --- Constructores ---
+    // Enlaces para el árbol binario de búsqueda 
+    private Producto izquierdo;   
+    private Producto derecho;     
+
+    // Constructores 
 
     public Producto(String nombre, double precio, String categoria, String fechaVencimiento, int cantidad) {
         this.nombre = nombre;
@@ -25,13 +29,15 @@ public class Producto {
         this.cantidad = cantidad;
         this.listaImagenes = new ArrayList<>();
         this.siguiente = null; 
+        this.izquierdo = null;
+        this.derecho = null;
     }
 
     public Producto(String nombre, double precio, String categoria, int cantidad) {
         this(nombre, precio, categoria, "", cantidad);
     }
 
-    // --- Getters y Setters ---
+    // Getters y Setters 
 
     public String getNombre() {
         return nombre;
@@ -77,13 +83,30 @@ public class Producto {
         return listaImagenes;
     }
 
-    // Getter y Setter enlace al siguiente producto
+    // Getter y Setter enlace lista enlazada
     public Producto getSiguiente() {
         return siguiente;
     }
 
     public void setSiguiente(Producto siguiente) {
         this.siguiente = siguiente;
+    }
+
+    // Getters y Setters para el árbol izq / der
+    public Producto getIzquierdo() {
+        return izquierdo;
+    }
+
+    public void setIzquierdo(Producto izquierdo) {
+        this.izquierdo = izquierdo;
+    }
+
+    public Producto getDerecho() {
+        return derecho;
+    }
+
+    public void setDerecho(Producto derecho) {
+        this.derecho = derecho;
     }
 
     // Agregar una imagen a la lista 
@@ -108,3 +131,4 @@ public class Producto {
                 + "}\n";
     }
 }
+    
