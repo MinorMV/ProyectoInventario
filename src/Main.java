@@ -1,3 +1,5 @@
+//Clase Main
+
 import java.util.Scanner;
 
 public class Main {
@@ -15,46 +17,46 @@ public class Main {
 
         do {
             System.out.println("\n======================================");
-            System.out.println("  SISTEMA DE INVENTARIO - AVANCE 2");
+            System.out.println("  SISTEMA DE INVENTARIO - Super Data Market");
             System.out.println("======================================");
             System.out.println("1) Insertar PRODUCTO al INVENTARIO");
             System.out.println("2) Mostrar INVENTARIO (inorden)");
             System.out.println("3) Registrar CLIENTE y llenar CARRITO");
             System.out.println("4) Mostrar COLA de clientes");
-            System.out.println("5) Atender SIGUIENTE cliente (FACTURA)");
-            System.out.println("6) Salir");
+            System.out.println("5) Atender SIGUIENTE cliente (FACTURA + ruta)");
+            System.out.println("6) Mostrar mapa de rutas (grafo)");
+            System.out.println("7) Salir");
             System.out.print("Elija una opción: ");
 
             opcion = leerEntero(sc);
 
             switch (opcion) {
                 case 1:
-                    // Insertar producto al inventario (árbol)
                     Producto nuevo = capturarProducto(sc);
                     tienda.agregarProductoAlInventario(nuevo);
                     break;
 
                 case 2:
-                    // Mostrar inventario en inorden
                     tienda.mostrarInventario();
                     break;
 
                 case 3:
-                    // Registrar cliente y llenar su carrito
                     registrarClienteYCarrito(sc);
                     break;
 
                 case 4:
-                    // Mostrar cola de clientes
                     tienda.mostrarColaClientes();
                     break;
 
                 case 5:
-                    // Atender siguiente cliente y mostrar factura
                     tienda.atenderSiguienteCliente();
                     break;
 
                 case 6:
+                    tienda.mostrarRutasEntrega();
+                    break;
+
+                case 7:
                     System.out.println("Saliendo del sistema. ¡Hasta pronto!");
                     break;
 
@@ -62,12 +64,10 @@ public class Main {
                     System.out.println("Opción no válida, intente otra vez.\n");
                     break;
             }
-        } while (opcion != 6);
+        } while (opcion != 7);
 
         sc.close();
     }
-
-    // Captura de datos de producto 
 
     private static Producto capturarProducto(Scanner sc) {
         System.out.println("\n--- Ingrese los datos del producto ---");
@@ -106,7 +106,7 @@ public class Main {
         return p;
     }
 
-    // Registrar cliente y llenar carrito desde el inventario 
+    // Registrar cliente y carrito
 
     private static void registrarClienteYCarrito(Scanner sc) {
         System.out.println("\n--- Registro de cliente ---");
@@ -123,7 +123,10 @@ public class Main {
             }
         } while (prioridad < 1 || prioridad > 3);
 
-        Cliente cliente = new Cliente(nombreCliente, prioridad);
+        // Ubicacion del cliente
+        String ubicacionCliente = seleccionarUbicacionCliente(sc);
+
+        Cliente cliente = new Cliente(nombreCliente, prioridad, ubicacionCliente);
 
         System.out.println("\nAhora vamos a llenar el carrito del cliente.");
         String seguir;
@@ -153,28 +156,60 @@ public class Main {
 
         } while (seguir.equalsIgnoreCase("s"));
 
-        // Validación extra: carrito vacío
         if (cliente.getCarrito().estaVacia()) {
             System.out.println("Aviso: el cliente se registró sin productos en el carrito.\n");
         }
 
-        // Registrar cliente en la cola
         tienda.registrarCliente(cliente);
         System.out.println("Cliente registrado y agregado a la cola de atención.\n");
     }
 
-    // --- Cargar algunos productos iniciales al inventario (árbol) ---
+    // Seleccionar ubicacion
+
+    private static String seleccionarUbicacionCliente(Scanner sc) {
+        while (true) {
+            System.out.println("\nSeleccione la ubicación del cliente:");
+            System.out.println("1) San Pedro");
+            System.out.println("2) Curridabat");
+            System.out.println("3) Montes de Oca");
+            System.out.println("4) Sabanilla");
+            System.out.println("5) Zapote");
+            System.out.println("6) Guadalupe");
+            System.out.print("Opción: ");
+
+            int opcionUbicacion = leerEntero(sc);
+
+            switch (opcionUbicacion) {
+                case 1:
+                    return "San Pedro";
+                case 2:
+                    return "Curridabat";
+                case 3:
+                    return "Montes de Oca";
+                case 4:
+                    return "Sabanilla";
+                case 5:
+                    return "Zapote";
+                case 6:
+                    return "Guadalupe";
+                default:
+                    System.out.println("Opción inválida. Intente de nuevo.\n");
+            }
+        }
+    }
+
+    // Productos registrados
 
     private static void cargarProductosIniciales() {
         Producto a = new Producto("Aceite de oliva extra virgen", 5200.0,
                 "Aceites", "2026-02-15", 3);
         a.agregarImagen("img/aceite_oliva.png");
 
-        Producto b = new Producto("Atún con vegetales", 2150.0,
+        Producto b = new Producto("Atun con vegetales", 2150.0,
                 "Conservas", "2027-05-30", 6);
         b.agregarImagen("img/atun_vegetales.png");
 
-        Producto c = new Producto("Jabón lavaplatos líquido limón", 1450.0,
+        Producto c = new Producto("Jabon lavaplatos liquido limon", 1450.0,
                 "Limpieza", 4);
         c.agregarImagen("img/jabon_lavaplatos.png");
 
@@ -192,8 +227,6 @@ public class Main {
         tienda.agregarProductoAlInventario(d);
         tienda.agregarProductoAlInventario(e);
     }
-
-    // Lectura
 
     private static int leerEntero(Scanner sc) {
         int n;

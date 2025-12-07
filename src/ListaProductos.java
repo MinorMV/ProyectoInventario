@@ -1,10 +1,9 @@
+// Clase ListaProductos 
 import java.util.Scanner;
-
-/* Clase ListaProductos */
 
 public class ListaProductos {
 
-    // Nodo 
+    // Nodo
     private Producto cabeza;
 
     // Constructor
@@ -12,14 +11,14 @@ public class ListaProductos {
         cabeza = null;
     }
 
-    // Insertar al inicio 
+    // Insertar al inicio
     public void insertarInicio(Producto nuevoProducto) {
         nuevoProducto.setSiguiente(cabeza);
         cabeza = nuevoProducto;
         System.out.println("Producto agregado al inicio correctamente.\n");
     }
 
-    // Insertar al final 
+    // Insertar al final
     public void insertarFinal(Producto nuevoProducto) {
         if (cabeza == null) {
             cabeza = nuevoProducto;
@@ -30,11 +29,11 @@ public class ListaProductos {
             }
             aux.setSiguiente(nuevoProducto);
         }
-        nuevoProducto.setSiguiente(null); 
+        nuevoProducto.setSiguiente(null);
         System.out.println("Producto agregado al final correctamente.\n");
     }
 
-    // Modificar producto por nombre 
+    // Modificar producto por nombre
     public void modificarProducto(String nombreBuscado, Scanner sc) {
         Producto aux = cabeza;
         boolean encontrado = false;
@@ -96,7 +95,7 @@ public class ListaProductos {
         }
     }
 
-    // Imprimir los productos 
+    // Imprimir los productos
     public void imprimirLista() {
         if (cabeza == null) {
             System.out.println("La lista está vacía.\n");
@@ -124,7 +123,7 @@ public class ListaProductos {
         System.out.println("\n--- Reporte de costos del inventario ---");
         while (aux != null) {
             double costo = aux.getCostoTotal();
-            System.out.println(aux.getNombre() + " - " + aux.getCantidad() + " unidades × " 
+            System.out.println(aux.getNombre() + " - " + aux.getCantidad() + " unidades × "
                     + aux.getPrecio() + " colones = " + costo + " colones");
             totalGeneral += costo;
             aux = aux.getSiguiente();
@@ -147,11 +146,11 @@ public class ListaProductos {
         Producto aux = cabeza;
         double totalGeneral = 0;
 
-        System.out.println("\n--- Detalle del carrito ---");
+        System.out.println("--- Detalle del carrito ---");
 
         while (aux != null) {
             double subtotal = aux.getPrecio() * aux.getCantidad();
-            System.out.println(aux.getNombre() + " - " + aux.getCantidad() + " unidades × " 
+            System.out.println(aux.getNombre() + " - " + aux.getCantidad() + " unidades × "
                     + aux.getPrecio() + " colones = " + subtotal + " colones");
             totalGeneral += subtotal;
             aux = aux.getSiguiente();

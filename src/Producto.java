@@ -1,34 +1,34 @@
-import java.util.ArrayList;
+// Clase Producto
 
-/* Clase Producto:*/
+import java.util.ArrayList;
 
 public class Producto {
 
-    // Atributos 
+    // Atributos
     private String nombre;
     private double precio;
     private String categoria;
-    private String fechaVencimiento; 
-    private int cantidad;            
+    private String fechaVencimiento;
+    private int cantidad;
     private ArrayList<String> listaImagenes;
 
     // Enlace siguiente producto lista enlazada
     private Producto siguiente;
 
-    // Enlaces para el árbol binario de búsqueda 
-    private Producto izquierdo;   
-    private Producto derecho;     
+    // Enlaces para el árbol binario de búsqueda
+    private Producto izquierdo;
+    private Producto derecho;
 
-    // Constructores 
+    // Constructores
 
     public Producto(String nombre, double precio, String categoria, String fechaVencimiento, int cantidad) {
         this.nombre = nombre;
         this.precio = precio;
         this.categoria = categoria;
-        this.fechaVencimiento = fechaVencimiento; 
+        this.fechaVencimiento = fechaVencimiento;
         this.cantidad = cantidad;
         this.listaImagenes = new ArrayList<>();
-        this.siguiente = null; 
+        this.siguiente = null;
         this.izquierdo = null;
         this.derecho = null;
     }
@@ -37,7 +37,7 @@ public class Producto {
         this(nombre, precio, categoria, "", cantidad);
     }
 
-    // Getters y Setters 
+    // Getters y Setters
 
     public String getNombre() {
         return nombre;
@@ -83,7 +83,6 @@ public class Producto {
         return listaImagenes;
     }
 
-    // Getter y Setter enlace lista enlazada
     public Producto getSiguiente() {
         return siguiente;
     }
@@ -92,7 +91,6 @@ public class Producto {
         this.siguiente = siguiente;
     }
 
-    // Getters y Setters para el árbol izq / der
     public Producto getIzquierdo() {
         return izquierdo;
     }
@@ -109,7 +107,7 @@ public class Producto {
         this.derecho = derecho;
     }
 
-    // Agregar una imagen a la lista 
+    // Agregar una imagen a la lista
     public void agregarImagen(String ruta) {
         listaImagenes.add(ruta);
     }
@@ -131,4 +129,3 @@ public class Producto {
                 + "}\n";
     }
 }
-    

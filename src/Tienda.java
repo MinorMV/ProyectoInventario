@@ -1,28 +1,36 @@
-/* Clase Tienda: */
+//Clase Tienda
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Tienda {
 
     // Atributos
     private String nombre;
-    private ArbolProductos inventario;   // Árbol de productos
-    private ColaClientes colaClientes;   // Cola de prioridad de clientes
+    private ArbolProductos inventario;   
+    private ColaClientes colaClientes;   
 
-    // Constructores 
+    // Ubicacion y rutas
+    private String ubicacion;            
+    private Grafo grafoUbicaciones;     
+
+    // Constructor
 
     public Tienda(String nombre) {
         this.nombre = nombre;
         this.inventario = new ArbolProductos();
         this.colaClientes = new ColaClientes();
+
+        this.ubicacion = "San Pedro";
+        this.grafoUbicaciones = new Grafo();
+        inicializarGrafoUbicaciones();
     }
 
-    // Getters y Setters 
+    // Getters
 
     public String getNombre() {
         return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public ArbolProductos getInventario() {
@@ -33,33 +41,40 @@ public class Tienda {
         return colaClientes;
     }
 
-    // Agregar un producto al inventario (árbol)
+    public String getUbicacion() {
+        return ubicacion;
+    }
+
+    public Grafo getGrafoUbicaciones() {
+        return grafoUbicaciones;
+    }
+
+    // Metodos
+
     public void agregarProductoAlInventario(Producto p) {
         inventario.insertar(p);
         System.out.println("Producto agregado al inventario de la tienda.\n");
     }
 
-    // Mostrar el inventario 
     public void mostrarInventario() {
         inventario.imprimirInOrden();
     }
 
-    // Buscar un producto en el inventario por nombre
     public Producto buscarProductoEnInventario(String nombreProducto) {
         return inventario.buscar(nombreProducto);
     }
 
-    // Registrar un cliente en la cola de atención
+
     public void registrarCliente(Cliente c) {
         colaClientes.encolar(c);
     }
 
-    // Mostrar los clientes actualmente en la cola
     public void mostrarColaClientes() {
         colaClientes.mostrarCola();
     }
 
-    // Agregar un producto al carrito de un cliente, a partir del inventario.
+    // Agregar producto al carrito
+
     public void agregarProductoAlCarrito(Cliente cliente, String nombreProducto, int cantidad) {
         if (cliente == null) {
             System.out.println("No se recibió un cliente válido.\n");
@@ -84,7 +99,7 @@ public class Tienda {
             return;
         }
 
-        // Crear una copia del producto para el carrito con la cantidad solicitada
+
         Producto enCarrito = new Producto(
                 enInventario.getNombre(),
                 enInventario.getPrecio(),
@@ -93,32 +108,31 @@ public class Tienda {
                 cantidad
         );
 
-        // Copiar las imágenes 
         for (String ruta : enInventario.getListaImagenes()) {
             enCarrito.agregarImagen(ruta);
         }
 
-        // Agregar al carrito del cliente 
         cliente.getCarrito().insertarFinal(enCarrito);
 
-        // Descontar del inventario
         enInventario.setCantidad(enInventario.getCantidad() - cantidad);
 
         System.out.println("Producto agregado al carrito de " + cliente.getNombre() + " correctamente.\n");
     }
 
-    // Atender al siguiente cliente y mostrar factura
+    // Atender cliente, factura + ruta
+
     public void atenderSiguienteCliente() {
         Cliente c = colaClientes.atenderSiguiente();
         if (c == null) {
-            return; 
+            return;
         }
 
         System.out.println("--- FACTURA ---");
         System.out.println("Tienda: " + nombre);
         System.out.println("Cliente: " + c.getNombre()
                 + " (prioridad " + c.getPrioridad() + ")");
-        System.out.println("\nProductos en el carrito:\n");
+        System.out.println("Ubicacion del cliente: " + c.getUbicacion());
+        System.out.println("Productos en el carrito:\n");
 
         ListaProductos carrito = c.getCarrito();
 
@@ -128,6 +142,61 @@ public class Tienda {
             carrito.reporteCarrito();
         }
 
+        // Ruta de entrega 
+
+        System.out.println("--- RUTA DE ENTREGA (camino más corto) ---");
+
+        if (c.getUbicacion() == null || c.getUbicacion().trim().isEmpty()) {
+            System.out.println("El cliente no tiene una ubicación definida. No se puede calcular la ruta.\n");
+        } else if (!grafoUbicaciones.contieneVertice(c.getUbicacion())
+                || !grafoUbicaciones.contieneVertice(ubicacion)) {
+            System.out.println("No existe información de rutas para alguna de las ubicaciones.\n");
+        } else {
+            Map<String, Integer> distancias = new HashMap<>();
+            Map<String, String> predecesores = new HashMap<>();
+
+            grafoUbicaciones.algoritmoDijkstra(c.getUbicacion(), distancias, predecesores);
+
+            List<String> camino = grafoUbicaciones.reconstruirCamino(c.getUbicacion(), ubicacion, predecesores);
+
+            if (camino.isEmpty()) {
+                System.out.println("No se encontró un camino entre " + c.getUbicacion()
+                        + " y " + ubicacion + ".\n");
+            } else {
+                System.out.println("Ubicación de la tienda: " + ubicacion);
+                System.out.println("Camino más corto: " + String.join(" -> ", camino));
+                Integer distanciaTotal = distancias.get(ubicacion);
+                System.out.println("Distancia total aproximada: " + distanciaTotal + " km\n");
+            }
+        }
+
         System.out.println("-------- FIN DE FACTURA --------\n");
+    }
+
+    // Inicializar el grafo 
+
+    private void inicializarGrafoUbicaciones() {
+        grafoUbicaciones.agregarVertice(ubicacion); 
+        grafoUbicaciones.agregarVertice("Curridabat");
+        grafoUbicaciones.agregarVertice("Montes de Oca");
+        grafoUbicaciones.agregarVertice("Sabanilla");
+        grafoUbicaciones.agregarVertice("Zapote");
+        grafoUbicaciones.agregarVertice("Guadalupe");
+
+        grafoUbicaciones.agregarArista(ubicacion, "Montes de Oca", 2);
+        grafoUbicaciones.agregarArista(ubicacion, "Guadalupe", 3);
+        grafoUbicaciones.agregarArista(ubicacion, "Zapote", 4);
+
+        grafoUbicaciones.agregarArista("Montes de Oca", "Sabanilla", 2);
+        grafoUbicaciones.agregarArista("Guadalupe", "Sabanilla", 2);
+        grafoUbicaciones.agregarArista("Zapote", "Curridabat", 3);
+        grafoUbicaciones.agregarArista("Curridabat", "Montes de Oca", 4);
+        grafoUbicaciones.agregarArista("Guadalupe", "Curridabat", 5);
+    }
+
+    // Mostrar grafo 
+
+    public void mostrarRutasEntrega() {
+        grafoUbicaciones.mostrarGrafo();
     }
 }

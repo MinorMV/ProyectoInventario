@@ -12,7 +12,7 @@ public class ColaClientes {
         clientes = new ArrayList<>();
     }
 
-    // Encolar un cliente (se agrega al final)
+    // Encolar un cliente 
     public void encolar(Cliente c) {
         clientes.add(c);
         System.out.println("Cliente agregado a la cola correctamente.\n");
@@ -38,19 +38,16 @@ public class ColaClientes {
         int indiceGanador = 0;
         Cliente ganador = clientes.get(0);
 
-        // Buscamos el cliente con mayor prioridad
+        // Cliente con mayor prioridad
         for (int i = 1; i < clientes.size(); i++) {
             Cliente actual = clientes.get(i);
-
-            // Si tiene prioridad mayor, pasa a ser el nuevo ganador
             if (actual.getPrioridad() > ganador.getPrioridad()) {
                 ganador = actual;
                 indiceGanador = i;
             }
-            // Si la prioridad es igual, se mantiene el que está más cerca del frente
         }
 
-        // Eliminamos al ganador de la cola y lo retornamos
+        // Eliminamos al ganador de la cola y retornamos
         clientes.remove(indiceGanador);
         System.out.println("Atendiendo a: " + ganador.getNombre()
                 + " (prioridad " + ganador.getPrioridad() + ")\n");

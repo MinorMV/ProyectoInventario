@@ -1,4 +1,4 @@
-/* Clase ArbolProductos:*/
+// Clase ArbolProductos
 
 public class ArbolProductos {
 
